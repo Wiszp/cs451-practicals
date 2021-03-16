@@ -1,3 +1,7 @@
+# Author: Jack English
+# CSCI 0451 Machine Learning, Practical 3
+# Skeleton provided by Professor Foley
+
 """
 In this lab, we'll go ahead and use the sklearn API to compare some real models over real data!
 Same data as last time, for now.
@@ -78,7 +82,7 @@ X_train, X_vali, y_train, y_vali = train_test_split(
 params = {
     "criterion": "gini",
     "splitter": "best",
-    "max_depth": 5,
+    "max_depth": 10, #modified from 5 to 10 as part of TODO #2B
 }
 
 # train 100 different models, with different sources of randomness:
@@ -114,15 +118,17 @@ plt.xticks(ticks=[1, 2], labels=["Seed-Based", "Bootstrap-Based"])
 plt.xlabel("Sampling Method")
 plt.ylabel("Accuracy")
 plt.ylim([0.8, 1.0])
-plt.show()
+#plt.show()
+plt.savefig("dtree-variance.png")
 # if plt.show is not working, try opening the result of plt.savefig instead!
 # plt.savefig("dtree-variance.png") # This doesn't work well on repl.it.
 
-TODO("1. understand/compare the bounds generated between the two methods.")
-TODO("2. Do one of the two following experiments.")
-TODO(
-    "2A. Evaluation++: what happens to the variance if we do K bootstrap samples for each of M models?"
-)
-TODO(
-    "2B. Return to experimenting on the decision tree: modify the plot to show ~10 max_depths of the decision tree."
-)
+#TODO: 1. understand/compare the bounds generated between the two methods.
+#The seed data has a much smalle spread. Though the lower 50% is generally higher than that of the
+#bootstrap results, the upper 50% of the bootstrap results is noticeably higher. The more important
+#take away though is the general spread patterns of the two methods.
+#TODO("2. Do one of the two following experiments.")
+#TODO 2A: Evaluation++: what happens to the variance if we do K bootstrap samples for each of M models?
+#TODO 2B: Return to experimenting on the decision tree: modify the plot to show ~10 max_depths of the decision tree.
+
+# I performed experiment 2B, and the seeded box and whisker plot has a noticeably greater spread.
