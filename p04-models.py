@@ -1,3 +1,8 @@
+#Jack English
+#CSCI 0451 Machine Learning, Practical 4
+#March 11th, 2021
+#Skeleton provided by Professor Foley
+
 import numpy as np
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.model_selection import train_test_split
@@ -33,7 +38,8 @@ with open(dataset_local_path("poetry_id.jsonl")) as fp:
 ## CONVERT TO MATRIX:
 
 feature_numbering = DictVectorizer(sort=True)
-X = feature_numbering.fit_transform(examples)
+X = feature_numbering.fit_transform(examples) / 100 #Divide by 100 for the sake of scaling it so that it doesn't complain
+          #about taking too much time
 
 print("Features as {} matrix.".format(X.shape))
 
@@ -110,7 +116,7 @@ def consider_perceptron() -> ExperimentResult:
         params = {
             "random_state": rnd,
             "penalty": None,
-            "max_iter": 1000,
+            "max_iter": 500,
         }
         f = Perceptron(**params)
         f.fit(X_train, y_train)
@@ -128,7 +134,7 @@ def consider_logistic_regression() -> ExperimentResult:
         params = {
             "random_state": rnd,
             "penalty": "l2",
-            "max_iter": 100,
+            "max_iter": 100, #original number was 100 loops
             "C": 1.0,
         }
         f = LogisticRegression(**params)
@@ -148,7 +154,7 @@ def consider_neural_net() -> ExperimentResult:
             "hidden_layer_sizes": (32,),
             "random_state": rnd,
             "solver": "lbfgs",
-            "max_iter": 500,
+            "max_iter": 2000, # Originally had 500 iterations, but that prompted warnings
             "alpha": 0.0001,
         }
         f = MLPClassifier(**params)

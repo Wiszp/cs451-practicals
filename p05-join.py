@@ -1,4 +1,10 @@
 """
+Jack English
+CSCI 0451 Practical 5, Professor Foley
+March 16, 2021
+"""
+
+"""
 In this lab, we once again have a mandatory 'python' challenge.
 Then we have a more open-ended Machine Learning 'see why' challenge.
 
