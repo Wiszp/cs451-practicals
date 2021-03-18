@@ -196,7 +196,7 @@ simple_boxplot(
 )
 
 TODO("1. Understand consider_decision_trees; I have 'tuned' it.")
-TODO("2. Find appropriate max_iter settings to stop warning messages.")
+TODO("2. Find appropriate max_iter settings to stop warning messages.") #I have worked this out
 TODO(
     "3. Pick a model: {perceptron, logistic regression, neural_network} and optimize it!"
 )

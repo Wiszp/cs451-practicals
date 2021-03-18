@@ -32,7 +32,7 @@ class JustWikiPage:
 
 
 # Load our pages into this pages list.
-pages: List[JustWikiPage] = []
+pages: List[JustWikiPage] = []  # initialize pages as type JustWikiPage
 with gzip.open(dataset_local_path("tiny-wiki.jsonl.gz"), "rt") as fp:
     for line in fp:
         entry = json.loads(line)
@@ -70,18 +70,20 @@ print(labels[0])
 joined_data: Dict[str, JoinedWikiData] = {}
 
 
-# TODO("1. create a list of JoinedWikiData from the ``pages`` and ``labels`` lists.")
-# This challenge has some very short solutions, so it's more conceptual. If you're stuck after ~10-20 minutes of thinking, ask!
+# create a list of JoinedWikiData from the ``pages`` and ``labels`` lists.")
 for p in pages:
     joined_data[p.wiki_id] = JoinedWikiData(
         p.wiki_id, is_literary=False, title=p.title, body=p.body
     )
+# The element in the joined data that corresponds to the wiki id of that page is a JoinedWikiData object taking stuff from page p
+# and then defaulting is_literary to false
+
 for l in labels:
     joined_data[l.wiki_id].is_literary = l.is_literary
+# Correctly update the labels for each page in the joined thing based on the label
 
-############### Problem 1 ends here ###############
 
-# Make sure it is solved correctly!
+# Make sure Problem 1 is solved correctly!
 assert len(joined_data) == len(pages)
 assert len(joined_data) == len(labels)
 # Make sure it has *some* positive labels!
@@ -130,7 +132,7 @@ X_vali = word_to_column.transform(ex_vali)
 X_test = word_to_column.transform(ex_test)
 
 
-print("Ready to Learn!")
+print("Ready to Learn!")  # Fired up and ready to go
 from sklearn.linear_model import LogisticRegression, SGDClassifier, Perceptron
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import roc_auc_score
