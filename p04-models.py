@@ -1,7 +1,7 @@
-#Jack English
-#CSCI 0451 Machine Learning, Practical 4
-#March 11th, 2021
-#Skeleton provided by Professor Foley
+# Jack English
+# CSCI 0451 Machine Learning, Practical 4
+# March 11th, 2021
+# Skeleton provided by Professor Foley
 
 import numpy as np
 from sklearn.feature_extraction import DictVectorizer
@@ -38,8 +38,10 @@ with open(dataset_local_path("poetry_id.jsonl")) as fp:
 ## CONVERT TO MATRIX:
 
 feature_numbering = DictVectorizer(sort=True)
-X = feature_numbering.fit_transform(examples) / 100 #Divide by 100 for the sake of scaling it so that it doesn't complain
-          #about taking too much time
+X = (
+    feature_numbering.fit_transform(examples) / 100
+)  # Divide by 100 for the sake of scaling it so that it doesn't complain
+# about taking too much time
 
 print("Features as {} matrix.".format(X.shape))
 
@@ -134,8 +136,8 @@ def consider_logistic_regression() -> ExperimentResult:
         params = {
             "random_state": rnd,
             "penalty": "l2",
-            "max_iter": 100, #original number was 100 loops
-            "C": 1.0,
+            "max_iter": 100,  # original number was 100 loops
+            "C": 300,  # originally was 1.0, 300 does best so far
         }
         f = LogisticRegression(**params)
         f.fit(X_train, y_train)
@@ -154,7 +156,7 @@ def consider_neural_net() -> ExperimentResult:
             "hidden_layer_sizes": (32,),
             "random_state": rnd,
             "solver": "lbfgs",
-            "max_iter": 2000, # Originally had 500 iterations, but that prompted warnings
+            "max_iter": 2000,  # Originally had 500 iterations, but that prompted warnings
             "alpha": 0.0001,
         }
         f = MLPClassifier(**params)
@@ -195,8 +197,11 @@ simple_boxplot(
     save="model-cmp.png",
 )
 
-TODO("1. Understand consider_decision_trees; I have 'tuned' it.")
-TODO("2. Find appropriate max_iter settings to stop warning messages.") #I have worked this out
+TODO("1. Understand consider_decision_trees; I have 'tuned' it.")  # Understood!
+TODO(
+    "2. Find appropriate max_iter settings to stop warning messages."
+)  # I have worked this out
 TODO(
     "3. Pick a model: {perceptron, logistic regression, neural_network} and optimize it!"
 )
+# I chose to optimize the logistic regression, and managed to make it noticeably better.
