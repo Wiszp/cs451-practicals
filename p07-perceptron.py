@@ -41,7 +41,7 @@ with open(dataset_local_path("poetry_id.jsonl")) as fp:
 ## CONVERT TO MATRIX:
 
 feature_numbering = DictVectorizer(sort=True, sparse=False)
-X = feature_numbering.fit_transform(examples)
+X = feature_numbering.fit_transform(examples) / 100  # SCALING FOR SAKE OF MLP LATER
 
 print("Features as {} matrix.".format(X.shape))
 
@@ -230,19 +230,38 @@ skP = Perceptron()
 print("Train sklearn-Perceptron (skP)")
 for iter in tqdm(range(1000)):
     # Note we use partial_fit rather than fit to expose the loop to our code!
-    skP.partial_fit(X_train, y_train, classes=(0, 1))
+    # if iter % 5 == 0:  # for every fifth loop
+    for loop in range(20):
+        skP.partial_fit(X_train, y_train, classes=(0, 1))
     learning_curves["skPerceptron"].add_sample(skP, X_train, y_train, X_vali, y_vali)
 print("skP. Train-Accuracy: {:.3}".format(skP.score(X_train, y_train)))
 print("skP. Vali-Accuracy: {:.3}".format(skP.score(X_vali, y_vali)))
 
 
 ## TODO Exploration 1: use a loop around partial-fit to generate another graph!
-#
+# DONE
 ## TODO Exploration 1A: Try a MLP (Multi-Layer Perceptron).
-mlp = MLPClassifier(hidden_layer_sizes=(32,))
-## TODO Exploration 1B: Try another Linear Model
-sgdc = SGDClassifier()
+# Will find something exciting if normalization is turned off.
+print("Train MLPClassifier")
+for rnd in tqdm(range(3)):
+    mlp = MLPClassifier(
+        hidden_layer_sizes=(32,), max_iter=2000, solver="lbfgs", random_state=0
+    )
+    mlp.fit(X_train, y_train)
+    learning_curves["MLPClassifier"].add_sample(mlp, X_train, y_train, X_vali, y_vali)
 
+## TODO Exploration 1B: Try another Linear Model
+# Can also try Naive Bayes instead
+from sklearn.naive_bayes import MultinomialNB
+
+print("Train Multinomial Naive Bayes")
+for alpha in [0.1, 1.0, 10.0]:
+    mnb = MultinomialNB(alpha=alpha)
+    mnb.fit(X_train, y_train)
+    learning_curves["MultinomialNB"].add_sample(mnb, X_train, y_train, X_vali, y_vali)
+
+# sgdc = SGDClassifier()
+# print("Train SGDClassifier")
 ## TODO Think: Why can't we make a graph like this for DecisionTreeClassifier?
 
 #%% Plot!
