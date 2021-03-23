@@ -13,7 +13,12 @@ You can contribute to science or get a sense of the data here: https://label.jjf
 """
 
 import gzip, json
-from shared import dataset_local_path, TODO
+from shared import (
+    dataset_local_path,
+    bootstrap_accuracy,
+    simple_boxplot,
+)  # added bootstrap_accuracy and simple_boxplot
+
 from dataclasses import dataclass
 from typing import Dict, List
 
@@ -70,7 +75,7 @@ print(labels[0])
 joined_data: Dict[str, JoinedWikiData] = {}
 
 
-# create a list of JoinedWikiData from the ``pages`` and ``labels`` lists.")
+# create a list of JoinedWikiData from the ``pages`` and ``labels`` lists."
 for p in pages:
     joined_data[p.wiki_id] = JoinedWikiData(
         p.wiki_id, is_literary=False, title=p.title, body=p.body
@@ -144,6 +149,7 @@ models = {
     "DTree": DecisionTreeClassifier(),
 }
 
+# What was provided
 for name, m in models.items():
     m.fit(X_train, y_train)
     print("{}:".format(name))
@@ -154,6 +160,35 @@ for name, m in models.items():
         scores = m.predict_proba(X_vali)[:, 1]
     print("\tVali-AUC: {:.3}".format(roc_auc_score(y_score=scores, y_true=y_vali)))
 
+# Bootstrapping time
+
+fitmodels = {}  # dictionary that will hold the fitted models
+
+# Python wants to auto=format this, hence the added
+# indentation
+for name, model in models.items():  # iterate through our models
+    fitmodels[name] = model.fit(
+        X_train, y_train
+    )  # fit them, and tuck them into the dictionary
+
+# Helper method to make a series of box-plots from the dictionary
+# of the fitted models.
+simple_boxplot(
+    {
+        # Python wants to auto=format this, hence the added
+        # indentation
+        "Logistic Regression": bootstrap_accuracy(
+            fitmodels["LogisticRegression"], X_vali, y_vali
+        ),
+        "Perceptron": bootstrap_accuracy(fitmodels["Perceptron"], X_vali, y_vali),
+        "Decision Tree": bootstrap_accuracy(fitmodels["DTree"], X_vali, y_vali),
+        "SGDClassifier": bootstrap_accuracy(fitmodels["SGDClassifier"], X_vali, y_vali),
+    },
+    title="Validation Accuracy",
+    xlabel="Model",
+    ylabel="Accuracy",
+    save="model-cmp.png",
+)
 """
 Results should be something like:
 
@@ -175,5 +210,6 @@ TODO("2.A. Is it a bad depth?")
 TODO("2.B. Do Random Forests do better?")
 TODO(
     "2.C. Is it randomness? Use simple_boxplot and bootstrap_auc/bootstrap_acc to see if the differences are meaningful!"
+    # No, it is not randomness. The DecisionTree model(s) are not doing as well as the other models.
 )
 TODO("2.D. Is it randomness? Control for random_state parameters!")
