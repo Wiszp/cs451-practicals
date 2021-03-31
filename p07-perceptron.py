@@ -1,4 +1,7 @@
 #%%
+# Author: Jack English (skeleton provided by Professor Foley)
+# CSCI Practical 07
+# March 30th, 2021
 from collections import defaultdict
 from sklearn import metrics
 from sklearn.feature_extraction import DictVectorizer
@@ -64,10 +67,14 @@ rX_train, rX_vali, y_train, y_vali = train_test_split(
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # TODO: Exploration 2: What normalization is best for your models?
-# THINK: Why didn't we normalize for decision trees?
+# THINK: Why didn't we normalize for decision trees? ANSWER: Because it would mess with the decision making algorithms?
 #
 # These are the three approaches to scaling I see in practice: variance / standard-deviation, min/max, nothing.
 # This replaces the X / 1000 hack we did a few weeks ago.
+
+# Changing norm to "Var" gave me errors for the Multinomial Naive Bayes implementation I did lower down.
+# Doing no normalization broke some of the other things.
+# Max normalization appears to be the best.
 norm = "max"
 if norm == "var":
     scale = StandardScaler()
@@ -87,7 +94,7 @@ else:
 print(X_train.shape, X_vali.shape, X_test.shape)
 
 # Delete these generic variables that we really shouldn't use anymore now that the data is fully-prepared.
-del X, y, ys, rX_train, rX_vali, rX_test
+del X, y, ys, rX_train, rX_vali, rX_test  # Why is this an error?
 
 
 #%% Define and Train Models
@@ -251,13 +258,20 @@ for rnd in tqdm(range(3)):
     learning_curves["MLPClassifier"].add_sample(mlp, X_train, y_train, X_vali, y_vali)
 
 ## TODO Exploration 1B: Try another Linear Model
-# Can also try Naive Bayes instead
+# Implementing Naive Bayes -- this appears to not interact well with the variable normalizing
+from sklearn.metrics import roc_auc_score
 from sklearn.naive_bayes import MultinomialNB
 
 print("Train Multinomial Naive Bayes")
 for alpha in [0.1, 1.0, 10.0]:
     mnb = MultinomialNB(alpha=alpha)
     mnb.fit(X_train, y_train)
+    scores = mnb.predict_proba(X_vali)[:, 1]
+    print(
+        "Accuracy: {:.3}, AUC: {:.3}".format(
+            mnb.score(X_vali, y_vali), roc_auc_score(y_score=scores, y_true=y_vali)
+        )
+    )
     learning_curves["MultinomialNB"].add_sample(mnb, X_train, y_train, X_vali, y_vali)
 
 # sgdc = SGDClassifier()
