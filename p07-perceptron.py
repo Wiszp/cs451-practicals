@@ -248,7 +248,7 @@ print("skP. Vali-Accuracy: {:.3}".format(skP.score(X_vali, y_vali)))
 ## TODO Exploration 1: use a loop around partial-fit to generate another graph!
 # DONE
 ## TODO Exploration 1A: Try a MLP (Multi-Layer Perceptron).
-# Will find something exciting if normalization is turned off.
+# Will find something exciting if normalization is turned off. (In my case, an error.)
 print("Train MLPClassifier")
 for rnd in tqdm(range(3)):
     mlp = MLPClassifier(
