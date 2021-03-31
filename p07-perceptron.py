@@ -74,7 +74,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Changing norm to "Var" gave me errors for the Multinomial Naive Bayes implementation I did lower down.
 # Doing no normalization broke some of the other things.
-# Max normalization appears to be the best.
+# Max normalization appears to be the best thing for my models.
 norm = "max"
 if norm == "var":
     scale = StandardScaler()
