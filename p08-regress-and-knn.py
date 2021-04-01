@@ -72,7 +72,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 feature_numbering = DictVectorizer(sparse=False)
 # Learn columns from training data (again)
 feature_numbering.fit(ex_train)
-# Translate our list of texts -> matrices of counts
+# Translate our list of numbers -> matrices of counts
 rX_train = feature_numbering.transform(ex_train)
 rX_vali = feature_numbering.transform(ex_vali)
 rX_test = feature_numbering.transform(ex_test)
@@ -123,6 +123,15 @@ print(dtr.score(X_vali, y_vali))
 # Options:
 #    - Try all the other regression models. DONE.
 #    - Research the AirQualityUCI dataset to see what the best approaches are!
+#          - https://www.kaggle.com/kerneler/starter-airqualityuci-393e377a-2
+#          - The above website has some interesting stuff for visualizing the data itself.
+#            Though it is not ML, it does use scikit scaling.
+#          - https://arxiv.org/ftp/arxiv/papers/1812/1812.04783.pdf
+#          - The above research uses one-dimensional Convolutional Neural Network,
+#            and Bi-directional Long Short-term Memory networks.
+#            "The former is to extract the local trend features and spatial correlation features,
+#            and the latter is to learn spatial-temporal dependencies." (Du et al., 2018).
+#            Can't say I understand this, but it is interesting to see the amount of models that exist!
 #    - Try at least one, plot a (y_pred, y_actual) scatter plot (e.g., visualize correlation / R**2)
 #    - [Difficult] see the brute-force kNN below, try to refactor the loops out of python.
 
