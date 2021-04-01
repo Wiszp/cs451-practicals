@@ -1,3 +1,7 @@
+# Author: Jack English (Skeleton provided by Professor Foley)
+# CS 0451 Machine Learning, Practical 8
+# April 1st, 2021
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
@@ -33,12 +37,15 @@ with open(dataset_local_path("AirQualityUCI.csv")) as fp:
             elif column_name == "Time":
                 time = column_value
             else:
+                # switching to American style
                 datapoint[column_name] = float(column_value.replace(",", "."))
-        if not datapoint:
+        if not datapoint:  # if datapoint doesn't exist
             continue
+        # Put the CO(GT) field in as our ys
         target = datapoint["CO(GT)"]
         del datapoint["CO(GT)"]
         ys.append(target)
+        # Put the rest of the example in as the X
         examples.append(datapoint)
 
 #%% Split data: (note 90% of 90% to make vali/test smaller)
@@ -46,7 +53,7 @@ with open(dataset_local_path("AirQualityUCI.csv")) as fp:
 RANDOM_SEED = 1234
 
 ## split off train/validate (tv) pieces.
-ex_tv, ex_test, y_tv, y_test = train_test_split(
+ex_tv, ex_test, y_tv, y_test = train_test_split(  # this is the training stuff
     examples,
     ys,
     train_size=0.9,
@@ -54,7 +61,7 @@ ex_tv, ex_test, y_tv, y_test = train_test_split(
     random_state=RANDOM_SEED,
 )
 # split off train, validate from (tv) pieces.
-ex_train, ex_vali, y_train, y_vali = train_test_split(
+ex_train, ex_vali, y_train, y_vali = train_test_split(  # this is the test stuff
     ex_tv, y_tv, train_size=0.9, shuffle=True, random_state=RANDOM_SEED
 )
 
@@ -71,6 +78,7 @@ rX_vali = feature_numbering.transform(ex_vali)
 rX_test = feature_numbering.transform(ex_test)
 
 scaling = StandardScaler()
+# (x - mean(xs)) / (stddev(xs)) per column is how the scaling occurs
 X_train = scaling.fit_transform(rX_train)
 X_vali = scaling.transform(rX_vali)
 X_test = scaling.transform(rX_test)
@@ -82,16 +90,38 @@ from sklearn.linear_model import SGDRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
+# K-Nearest Neighbors
 m = KNeighborsRegressor(n_neighbors=5, weights="distance")
 m.fit(X_train, y_train)
-
+print("KNeighborsRegressor Score: ")
 print(m.score(X_vali, y_vali))
+
+# SGD Regressor
+sgd = SGDRegressor()
+sgd.fit(X_train, y_train)
+print("SGDRegressor Score: ")
+print(sgd.score(X_vali, y_vali))
+
+# Have this commented out because it's extremely slow
+"""
+# MLP Regressor
+mlp = MLPRegressor(max_iter=1000)
+mlp.fit(X_train, y_train)
+print("MLPRegressor Score: ")
+print(mlp.score(X_vali, y_vali)) 
+"""
+
+# Decision Tree Regressor
+dtr = DecisionTreeRegressor()
+dtr.fit(X_train, y_train)
+print("DecisionTreeRegressor Score: ")
+print(dtr.score(X_vali, y_vali))
 
 ## Lab TODO:
 # Mandatory:
 # - Try some other regression models.
 # Options:
-#    - Try all the other regression models.
+#    - Try all the other regression models. DONE.
 #    - Research the AirQualityUCI dataset to see what the best approaches are!
 #    - Try at least one, plot a (y_pred, y_actual) scatter plot (e.g., visualize correlation / R**2)
 #    - [Difficult] see the brute-force kNN below, try to refactor the loops out of python.
