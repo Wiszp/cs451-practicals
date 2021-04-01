@@ -116,6 +116,8 @@ dtr = DecisionTreeRegressor()
 dtr.fit(X_train, y_train)
 print("DecisionTreeRegressor Score: ")
 print(dtr.score(X_vali, y_vali))
+y_predicted = dtr.predict(X_train, y_train)
+y_vali_predicted = dtr.predict(X_vali, y_vali)
 
 ## Lab TODO:
 # Mandatory:
@@ -134,6 +136,22 @@ print(dtr.score(X_vali, y_vali))
 #            Can't say I understand this, but it is interesting to see the amount of models that exist!
 #    - Try at least one, plot a (y_pred, y_actual) scatter plot (e.g., visualize correlation / R**2)
 #    - [Difficult] see the brute-force kNN below, try to refactor the loops out of python.
+
+# Let's plot one of them
+import matplotlib.pyplot as plt
+
+# scatter-plot
+plt.scatter(
+    y_predicted, y_vali_predicted, label="YPredictedYActual", alpha=0.7, marker="."
+)
+plt.ylim((0.75, 1.0))
+plt.title("Y-Predicted versus Y Actual".format(key, norm))
+plt.xlabel("ys")
+plt.ylabel("y actual")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
 
 # %% kNN Brute Force Below:
 # Note, this is really slow (see progress bar!)

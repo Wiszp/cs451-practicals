@@ -262,6 +262,9 @@ for rnd in tqdm(range(3)):
 from sklearn.metrics import roc_auc_score
 from sklearn.naive_bayes import MultinomialNB
 
+# This expects integer features, but here we're using visual features
+# which is why this doesn't really work.
+# Gaussian should do better because it expects floating-point features.
 print("Train Multinomial Naive Bayes")
 for alpha in [0.1, 1.0, 10.0]:
     mnb = MultinomialNB(alpha=alpha)
