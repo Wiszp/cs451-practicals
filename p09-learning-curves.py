@@ -1,3 +1,7 @@
+# Author: Jack English (Skeleton provided by Professor Foley)
+# CSCI 451 Practical 09
+# April 6th, 2021
+
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import DictVectorizer
@@ -49,7 +53,7 @@ X_test: np.ndarray = scale.transform(rX_test)  # type:ignore
 N = len(y_train)
 num_trials = 100
 percentages = list(range(5, 100, 5))
-percentages.append(100)
+percentages.append(100)  # Gives list of 5, 10, 15, ... 100
 scores = {}
 acc_mean = []
 acc_std = []
@@ -67,7 +71,14 @@ for train_percent in percentages:
             X_train, y_train, n_samples=n_samples, replace=False
         )  # type:ignore
         # Note here, I'm using a simple classifier for speed, rather than the best.
-        clf = SGDClassifier(random_state=RANDOM_SEED + train_percent + i)
+        # clf = SGDClassifier(random_state=RANDOM_SEED + train_percent + i)
+        clf = DecisionTreeClassifier(
+            splitter="best",
+            max_features=None,
+            criterion="gini",
+            max_depth=None,
+            random_state=RANDOM_SEED + train_percent + i,
+        )  # type:ignor
         clf.fit(X_sample, y_sample)
         # so we get 100 scores per percentage-point.
         scores[label].append(clf.score(X_vali, y_vali))
@@ -102,5 +113,8 @@ simple_boxplot(
 # TODO: (practical tasks)
 # 1. Swap in a better, but potentially more expensive classifier.
 #    - Even DecisionTreeClassifier has some more interesting behavior on these plots.
+#     - Swapped to use DecisionTreeClassifier - the results ended up being worse overall,
+#       but the performance got better at a steadier rate. I suspect it would outperform the
+#       original when given a larger dataset.
 # 2. Change the plots to operate over multiples of 50 samples, instead of percentages.
 #    - This will likely be how you want to make these plots for your project.
