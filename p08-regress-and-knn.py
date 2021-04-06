@@ -141,17 +141,22 @@ y_vali_predicted = dtr.predict(X_vali, y_vali)
 import matplotlib.pyplot as plt
 
 # scatter-plot
-plt.scatter(
-    y_predicted, y_vali_predicted, label="YPredictedYActual", alpha=0.7, marker="."
-)
-plt.ylim((0.75, 1.0))
-plt.title("Y-Predicted versus Y Actual".format(key, norm))
-plt.xlabel("ys")
-plt.ylabel("y actual")
+plt.scatter(y_vali, dtr.predict(X_vali), label="Validation Data", alpha=0.7, marker=".")
+# plt.ylim((0.75, 1.0))
+# plt.title("Y Validation versus Predicted Y Validation".format(key, norm))
+plt.xlabel("Y Validation")
+plt.ylabel("Predicted Y Validation")
 plt.legend()
 plt.tight_layout()
 plt.show()
 
+# Scatter plot for kNN
+plt.scatter(y_vali, m.predict(X_vali))
+plt.xlabel("Y Validation")
+plt.ylabel("Predicted Y Validation")
+plt.legend()
+plt.tight_layout()
+plt.show()
 
 # %% kNN Brute Force Below:
 # Note, this is really slow (see progress bar!)
