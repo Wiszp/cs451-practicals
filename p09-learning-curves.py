@@ -61,7 +61,7 @@ acc_std = []
 # Which subset of data will potentially really matter.
 for n_samples in percentages:
     train_percent = int((n_samples / N) * N)
-    print("{}% == {} samples...".format(train_percent, n_samples))
+    print("{} samples...".format(n_samples))
     label = "{}".format(n_samples)
 
     # So we consider num_trials=100 subsamples, and train a model on each.
@@ -93,7 +93,7 @@ means = np.array(acc_mean)
 std = np.array(acc_std)
 plt.plot(percentages, acc_mean, "o-")
 plt.fill_between(percentages, means - std, means + std, alpha=0.2)
-plt.xlabel("Percent Training Data")
+plt.xlabel("Number of Samples")
 plt.ylabel("Mean Accuracy")
 plt.title("Shaded Accuracy Plot")
 plt.savefig("graphs/p09-area-Accuracy.png")
@@ -104,7 +104,7 @@ plt.show()
 simple_boxplot(
     scores,
     "Learning Curve",
-    xlabel="Percent Training Data",
+    xlabel="Number of Samples",
     ylabel="Accuracy",
     save="graphs/p09-boxplots-Accuracy.png",
 )
