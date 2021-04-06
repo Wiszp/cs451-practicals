@@ -52,17 +52,17 @@ X_test: np.ndarray = scale.transform(rX_test)  # type:ignore
 #%% Actually compute performance for each % of training data
 N = len(y_train)
 num_trials = 100
-percentages = list(range(5, 100, 5))
-percentages.append(100)  # Gives list of 5, 10, 15, ... 100
+percentages = list(range(50, N, 50))
+percentages.append(N)  # Gives list of 50, 100, 150, ... N
 scores = {}
 acc_mean = []
 acc_std = []
 
 # Which subset of data will potentially really matter.
-for train_percent in percentages:
-    n_samples = int((train_percent / 100) * N)
+for n_samples in percentages:
+    train_percent = int((n_samples / N) * N)
     print("{}% == {} samples...".format(train_percent, n_samples))
-    label = "{}".format(train_percent, n_samples)
+    label = "{}".format(n_samples)
 
     # So we consider num_trials=100 subsamples, and train a model on each.
     scores[label] = []
@@ -95,7 +95,6 @@ plt.plot(percentages, acc_mean, "o-")
 plt.fill_between(percentages, means - std, means + std, alpha=0.2)
 plt.xlabel("Percent Training Data")
 plt.ylabel("Mean Accuracy")
-plt.xlim([0, 100])
 plt.title("Shaded Accuracy Plot")
 plt.savefig("graphs/p09-area-Accuracy.png")
 plt.show()
