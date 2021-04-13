@@ -1,4 +1,9 @@
 #%%
+# Author: Jack English (Skeleton from Professor Foley)
+# CSCI 0451
+# Practical 10
+# April 13th, 2021
+
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -39,19 +44,24 @@ def extract_features(row):
     numbers = [int(x) for x in NUMBERS.findall(body)]
 
     new_features = {
-        "disambig": "disambiguation" in title,
+        #  "disambig": "disambiguation" in title,
         "page_rank": row["page_rank"],
         "length": len(words),
-        # "18xx": sum(1 for x in numbers if 1800 < x <= 1900),
-        "random1": random.random(),
-        "random2": random.random(),
-        "random3": random.random(),
-        "random4": random.random(),
+        # "author": "author" in body,
+        # "book": "book" in body,
+        # "poetry": "poetry" in body,
+        # "literature": "literature" in body,
+        # "18xx": sum(1 for x in numbers if 1800 < x <= 1900)
+        # "17xx": sum(1 for x in numbers if 1700 < x <= 1799)
+        "random1": random.random()
+        # "random2": random.random(),
+        # "random3": random.random(),
+        # "random4": random.random(),
     }
     if len(numbers) > 0:
         new_features["mean_n"] = np.mean(numbers)
         new_features["std_n"] = np.std(numbers)
-
+        new_features["med_n"] = np.median(numbers)
     return new_features
 
 
@@ -192,10 +202,19 @@ plt.show()
 # TODO: Try to engineer some features!
 #
 # 1. Remove __obviously__ evil features (random1,random2,random3,random4)
+#  DONE: The spread on the "without" graph is much tighter, and the tree importance graph
+#        is more tightly packed as well.
 # 2. Add some good features
+#  I added a median, which appears to be a very valuable feature. I also added some other
+#  to look for keywords, which all seem to suck.
 # 2.1. See commented-out 18xx feature for ideas on how to use 'numbers'
-# 2.2. 'List_of_...' pages aren't considered literary
+#     DONE. Including the 18xx feature made the median feature way worse for some reason.
+#     Used numbers to implement median feature.
+# 2.2. 'List_of_...' pages aren't considered literary  DONE.
 # 3. Remove bad features (that weren't as obvious!)
 # ... could adding a random feature help you here?
+#  After re-adding the random feature, it's listed as important, but its AUC score is terrible.
+#  Removing the bad ones and including the random did not appear to improve the performance
+# of the random feature.
 
 # (optional). Consider improving ``train_and_eval`` to use more powerful models
