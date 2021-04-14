@@ -96,13 +96,7 @@ std = np.array(acc_std)
 plt.plot(percentages, acc_mean, "o-")
 # plot area from means & stddev
 plt.fill_between(percentages, means - std, means + std, alpha=0.2)
-<<<<<<< HEAD
 plt.xlabel("Number of Samples")
-=======
-
-# Manage axes/show:
-plt.xlabel("Percent Training Data")
->>>>>>> upstream/main
 plt.ylabel("Mean Accuracy")
 plt.title("Shaded Accuracy Plot")
 plt.savefig("graphs/p09-area-Accuracy.png")
