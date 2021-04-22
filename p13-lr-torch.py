@@ -1,3 +1,6 @@
+# Jack English
+# CSCI 0451 Practical 13
+# April 22nd, 2021
 #%%
 import numpy as np
 from sklearn import metrics
