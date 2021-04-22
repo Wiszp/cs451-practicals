@@ -1,3 +1,7 @@
+# Author: Jack English (Skeleton provided by Professor Foley)
+# CSCI 0451 Practical 6
+# April 22nd, 2021
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn.utils import resample
@@ -72,6 +76,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 # Note we're doing "CountVectorizer" here and not TfidfVectorizer. Hmm...
+# Converts a collection of text documents to a matrix of token counts
 word_features = CountVectorizer(
     strip_accents="unicode",
     lowercase=True,
@@ -103,7 +108,7 @@ from sklearn.naive_bayes import MultinomialNB
 
 # Try a couple alpha values (what to do with zero-prob words!)
 # Alpha can really be anything positive!
-for alpha in [0.1, 1.0, 10.0]:
+for alpha in [0.1, 1.0, 10.0, 3.0, 5.0, 7.0]:
     m = MultinomialNB(alpha=alpha)
     m.fit(X_train, y_train)
     scores = m.predict_proba(X_vali)[:, 1]
@@ -218,12 +223,24 @@ from shared import TODO
 TODO(
     "1. Explore alpha and linear parameters; make a decision about what a good choice for this dataset might be."
 )
+# Alpha parameters: Shifting the y-intercept
+# Linear parameters: shifting the slope of the line
+# The performance with alpha and linear parameters is good when they are both low. Including alpha parameters
+# over 1 led to very poor performance. However, the alpha parameter of 1.0 performed very well. Similarly,
+# the lower linear values (0.1 - 0.5) performed well. So, if I had to pick the best ones, I would choose
+# 1.0 for alpha and 0.3 for the linear.
 
 # 2 is once again a choose-your-own:
 TODO(
     "2A. Explore ngrams, lowercase v. uppercase, etc. (how changing CountVectorizer changes performance, or not)"
 )
+# Changing the ngram range to (2, 2) led to an error, as well as any other integer over 1.
+# Disabling lowercase also led to an error.
+# I am not quite sure what it is doing, but I have learned that it is very picky.
 TODO(
     "2B. Explore the difference between today's approaches to the WIKI dataset and yesterday's."
 )
 TODO("2C. Explore the differences between the WIKI dataset and the POETRY dataset.")
+# The WIKI dataset contains wikipedia articles (presumably those that are literary?), and
+# the POETRY dataset contains a large amount of poetry, along with other features related
+# to the specific poetry.
