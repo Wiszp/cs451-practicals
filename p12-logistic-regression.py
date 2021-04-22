@@ -1,3 +1,7 @@
+# Author: Jack English (skeleton from Professor Foley)
+# CSCI 0451 Practical 12
+# April 22nd, 2021
+
 #%%
 from dataclasses import dataclass, field
 import numpy as np
