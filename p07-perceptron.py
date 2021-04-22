@@ -259,6 +259,7 @@ for rnd in tqdm(range(3)):
 
 ## TODO Exploration 1B: Try another Linear Model
 # Implementing Naive Bayes -- this appears to not interact well with the variable normalizing
+# Which is probably because Naive Bayes isn't a linear model
 from sklearn.metrics import roc_auc_score
 from sklearn.naive_bayes import MultinomialNB
 
@@ -280,6 +281,8 @@ for alpha in [0.1, 1.0, 10.0]:
 # sgdc = SGDClassifier()
 # print("Train SGDClassifier")
 ## TODO Think: Why can't we make a graph like this for DecisionTreeClassifier?
+# Because it doesn't iterate a bunch over the same data set, and so it
+# doesn't really have a 'learning curve'?
 
 #%% Plot!
 
