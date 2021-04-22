@@ -1,9 +1,15 @@
+# Author: Jack English (Skeleton provided by Professor Foley)
+# CSCI 0451 Practical 11: Coordinate Ascent
+# April 22nd, 2021
 #%%
 from dataclasses import dataclass
 import numpy as np
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDRegressor, LinearRegression
+from sklearn.linear_model import (
+    SGDRegressor,
+    LinearRegression,
+)  # Stochastic Gradient Descent
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from shared import (
@@ -52,9 +58,13 @@ y_test = test_f.pop(PREDICT_COL)
 #%%
 # Now process data:
 # Note, we don't NEED DictVectorizer... why?
+# Is that because we aren't working with text, so we can just assemble the
+# tables ourselves in a fairly straightforward way?
 
 # Let's fix missing values;
 fix_missing = SimpleImputer(missing_values=-200.0)
+# Imputation transformer for completing missing values. Imputation is inferring
+# missing values from the data.
 
 scaler = StandardScaler()
 
@@ -140,7 +150,8 @@ for i in range(1000):
 
 print(["{:1.3f}".format(x[0]) for x in best_model.weights.tolist()])
 
-graphs["Best-of-Random"] = bootstrap_r2(best_model, X_vali, y_vali)
+# graphs["Best-of-Random"] = bootstrap_r2(best_model, X_vali, y_vali)
+# commenting out for to-do number 1
 
 # SGD uses derivatives to 'aim' it's search... faster than CA which explores every direction!
 for i in range(20):
@@ -213,4 +224,10 @@ simple_boxplot(graphs, "{} R**2".format(PREDICT_COL), save="graphs/p11-r2-score.
 ##
 # TODO:
 # 1. remove the 'best-of-random' graph, so you can see the other ones!
+# Done! Much better.
 # 2. See if there's anything here that might help your project.
+# Generally, some of the general Python stuff here might be useful in terms of how
+# I can restructure some of my functions and what not.
+# More specifically, I think trying coordinate ascent might be worthwhile for me,
+# given how important accuracy is to my project. It very well may underperform
+# the non-linear models, but so be it.
