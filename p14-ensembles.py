@@ -1,3 +1,6 @@
+# Author: Jack English (Skeleton from Professor Foley)
+# CSCI 451 Practical 14
+# May 4th, 2021
 import random
 import numpy as np
 from dataclasses import dataclass, field
@@ -67,17 +70,28 @@ for i in range(100):
     X_sample, y_sample = resample(X_train, y_train)  # type:ignore
 
     # TODO create a tree model.
-    tree = TODO("train and fit a model to the sampled data")
-
+    params = {"criterion": "entropy", "max_depth": 5, "random_state": RANDOM_SEED}
+    tree = DecisionTreeClassifier(**params)
+    tree.fit(X_sample, y_sample)
     # TODO Experiment:
     # What if instead of every tree having the same 1.0 weight, we considered some alternatives?
     #  - weight = the accuracy of that tree on the whole training set.
     #  - weight = the accuracy of that tree on the validation set.
     #  - weight = random.random()
     #  - weight = 0.1
-    weight = 1.0
+    # weight = 1.0
+    # weight = 0.1 # The accuracy for the forests doesn't
+    # tail off as hard with this weight
 
+    # weight = random.random()  # The forest results were much more variable
+
+    # weight = tree.score(X_vali, y_vali) # There was less variability in the results--
+    # it was much more smooth
+
+    weight = tree.score(X_sample, y_sample)  # This also produced a smoother curve, but
+    # marginally less accurate than the one sccored on the validation curves
     # hold onto it for voting
+
     forest.insert(weight, tree)
 
     tree_num.append(i)

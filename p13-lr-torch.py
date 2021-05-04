@@ -144,3 +144,29 @@ optimizer = optim.SGD(
 )
 
 train("neural_net", model, optimizer, objective, max_iter=1000)
+
+"""
+I worked in the Google Colab on this. Copy-pasted my notes from the bottom to here.
+Investigate LEARNING_RATE, DROPOUT, MOMENTUM, REGULARIZATION.
+
+Done. See comments below on what I think each of the four do.
+
+What do you think these variables change?
+
+LEARNING_RATE: How long the model actually spends learning things/how big the chunks it looks at are? The closer I set it to 0, the better the results.
+
+DROPOUT: As the comment in the code indicates, it sets how much of the neural net should be turned off during training. Maxes out at 1.0. Making it noticeably higher made things far worse.
+
+MOMENTUM: Presumably this is how much the model adjusts based on what came before. Setting this value to something low makes the model suck, and putting it too close to 1 (like 0.99) also hampers performance. Maxes out at 1. 0.9 appears to be a nice sweet spot.
+
+REGULARIZATION: This appears to try to force the model into an L-shape (the ideal, 'regular' shape).
+
+Consider a shallower, wider network.
+
+Changing [16,16] to something else... might require revisiting step 1.
+Adding more depth to the network made things take longer to run, and marginally improved performance (e.g., [64, 64])
+[8, 8, 8] performed notably worse
+[12, 12, 12] and [12, 12] also performed worse, as well as [32, 32, 32].
+Considering the above, depth definitely isn't helping.
+Changing things to [128] substantially improved performance, although it now takes longer to run. [256] performed worse than [128].
+"""
