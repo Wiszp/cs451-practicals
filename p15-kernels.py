@@ -71,6 +71,9 @@ class ModelInfo:
 # with low values meaning ‘far’ and high values meaning ‘close’. The gamma parameters can be seen as the
 # inverse of the radius of influence of samples selected by the model as support vectors."
 # A small gamma value is too restrictive, whereas conversely one that is too high will lead to overfitting
+
+# Based on my experimentation, the auto gamma seemed to do the best (not shocking). 0.001 performed very poorly,
+# and 0.1 and 0.2 performed very well. Higher stuff was somewhat of a mess.
 for cfg in configs:
     variants: T.List[ModelInfo] = []
     for gamma in [0.2, 0.1, 0.01, 0.001, "auto"]:
@@ -85,7 +88,7 @@ for cfg in configs:
                 name = "k={}{} gamma = {} C={} {}".format(
                     cfg["kernel"],
                     cfg.get("degree", ""),
-                    # cfg.get("gamma", "auto"), This is what Professor Foley
+                    # cfg.get("gamma", "auto"), This is what Professor Foley had
                     gamma,
                     c_val,
                     class_weights or "",
