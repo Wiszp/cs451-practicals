@@ -1,3 +1,6 @@
+# Author: Jack English (skeleton from Professor Foley)
+# CSCI 0451 Practical 16
+# May 13th, 2021
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.manifold import TSNE
@@ -40,7 +43,7 @@ levels = [course_to_level(n) for n in df.number.to_list()]
 # Or are pre-requisites. (number mentioned in text?)
 #    'plot([x1,x2], [y1,y2])' a line...
 
-## IDEAS: compare PCA to TSNE
+## IDEAS: compare PCA, SVD to TSNE
 # PCA doesn't have a perplexity parameter.
 # What does TSNE do better on this dataset?
 
